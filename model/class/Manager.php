@@ -80,4 +80,30 @@ class Manager{
         // Close handle
         curl_close($ch);
     }
+
+    public static function getMultipleRecords($sql, $types = null, $params = [])
+    {
+        $req = self::bdd()->prepare($sql);
+        if (!empty($params) && !empty($params)) { // parameters must exist before you call bind_param() method
+            $req->execute($params);
+        }
+        if($res = $req->fetchAll(PDO::FETCH_ASSOC)) {
+            return $res;
+        }
+    }
+    public static function getSingleRecord($sql, $params)
+    {
+        $req = self::bdd()->prepare($sql);
+        $req->execute($params);
+        if ($res = $req->fetch(PDO::FETCH_ASSOC)) {
+            return $res;
+        }
+    }
+
+    public static function modifyRecord($sql, $params)
+    {
+        $req = self::bdd()->prepare($sql);
+        $res = $req->execute($params);
+        return $res;
+    }
 }

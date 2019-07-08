@@ -30,7 +30,7 @@ ob_start();
                     <input type="file" name="profile_picture" id="profile_input" value="" style="display: none;">
                 </div>
                 <div class="form-group">
-                    <button type="submit" name="signup_btn" class="btn btn-success btn-block">Sign up</button>
+                    <button type="submit" class="btn btn-success btn-block">Sign up</button>
                 </div>
                 <p>Aready have an account? <a href="login.php">Sign in</a></p>
             </form>
