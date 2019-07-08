@@ -19,14 +19,17 @@
                     <a class="navbar-brand" href="#">UserAccounts</a>
                 </div>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="<?php echo ROOT_PATH . 'signup.php' ?>"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                    <li><a href="<?php echo ROOT_PATH . 'login.php' ?>"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    <li><a href="<?php echo ROOT_PATH . '/index.php?action=signup' ?>"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    <li><a href="<?php echo ROOT_PATH . '/index.php?action=login' ?>"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                 </ul>
             </div>
         </nav>
+
+        <?php echo $content ?>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="public/js/display_profile_image.js"></script>
     <script src="public/js/script.js"></script>
 </body>
 
