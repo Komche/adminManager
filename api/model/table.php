@@ -219,7 +219,7 @@ class Table
         $sql = "SELECT $fields FROM $table ORDER BY $fields DESC LIMIT 1;";
         $req = $this->db->query($sql);
 
-        if (self::$results['data'] = $req->fetch()) {
+        if (self::$results['data'] = $req->fetch(PDO::FETCH_ASSOC)) {
             echo json_encode(self::$results);
         }
     }
@@ -236,7 +236,7 @@ class Table
         $sql = "SELECT DISTINCT $fields FROM $table ORDER BY $fields DESC;";
         $req = $this->db->query($sql);
 
-        if (self::$results['data'] = $req->fetchAll()) {
+        if (self::$results['data'] = $req->fetchAll(PDO::FETCH_ASSOC)) {
             echo json_encode(self::$results);
         }
     }
