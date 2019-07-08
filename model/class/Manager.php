@@ -19,4 +19,65 @@ class Manager{
         }
         return $bdd;
     }
+
+    public static function  file_post_contents($url, $data)
+    {
+
+        $postdata = http_build_query($data);
+
+        $opts = array(
+            'http' =>
+            array(
+                'method'  => 'POST',
+                'header'  => 'Content-type: application/x-www-form-urlencoded',
+                'content' => $postdata
+            )
+        );
+        //print_r($opts); die($url);
+        // if ($username && $password) {
+        //     $opts['http']['header'] = ("Authorization: Basic " . base64_encode("$username:$password"));
+        // }
+
+        $context = stream_context_create($opts);
+        return file_get_contents($url, false, $context);
+    }
+
+    public static function  file_put_contents($url, $data)
+    {
+
+
+        $postdata = json_encode($data);
+
+        $opts = array(
+            'http' =>
+            array(
+                'method'  => 'PUT',
+                'header'  => 'Content-type: application/json',
+                'content' => $postdata
+            )
+        );
+        //print_r($opts); die($url);
+        // if ($username && $password) {
+        //     $opts['http']['header'] = ("Authorization: Basic " . base64_encode("$username:$password"));
+        // }
+
+        $context = stream_context_create($opts);
+        return file_get_contents($url, false, $context);
+    }
+
+    public static function file_get_data($url)
+    {
+        // Create a curl handle to a non-existing location
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $json = '';
+        if (($json = curl_exec($ch)) === false) {
+            die('Curl error: ' . curl_error($ch));
+        } else {
+            return json_decode($json, true);
+        }
+
+        // Close handle
+        curl_close($ch);
+    }
 }
