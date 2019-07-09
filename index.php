@@ -7,13 +7,14 @@ if (isset($_GET['action'])) {
         if (!empty($_POST) && !empty($_FILES[ 'profile_picture'])) {
             $data = $_POST;
             $file = $_FILES;
-            signIn($data, $file);
+            $errors = signIn($data, $file);
+           // return $errors;
         }
-        include('view/signupView.php');
+        getPath('signupView.php');
     } else {
         # code...
     }
     
 } else {
-    include('view/signupView.php');
+    getPath('homeView.php');
 }

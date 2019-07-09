@@ -26,7 +26,7 @@ class UserManager extends Manager
             $_SESSION['user'] = $user;
             $_SESSION['success_msg'] = "You are now logged in";
             // if user is admin, redirect to dashboard, otherwise to homepage
-            if (isAdmin($user_id)) {
+            if (self::isAdmin($user_id)) {
                 $permissionsSql = "SELECT p.name as permission_name FROM permissions as p
                             JOIN permission_role as pr ON p.id=pr.permission_id
                             WHERE pr.role_id=?";
@@ -34,7 +34,7 @@ class UserManager extends Manager
                 $_SESSION['userPermissions'] = $userPermissions;
                 header('location: ' . BASE_URL . 'admin/dashboard.php');
             } else {
-                header('location: ' . BASE_URL . 'index.php');
+                header('location: index.php');
             }
             exit(0);
         }
@@ -79,7 +79,7 @@ class UserManager extends Manager
             // Get image name
             $profile_picture = date("Y.m.d") . $file['profile_picture']['name'];
             // define Where image will be stored
-            $target = ROOT_PATH . "/public/img/" . $profile_picture;
+            $target = "public/img/" . $profile_picture;
             // upload image to folder
             if (move_uploaded_file($file['profile_picture']['tmp_name'], $target)) {
                 return $profile_picture;
@@ -104,15 +104,20 @@ class UserManager extends Manager
 
         // if no errors, proceed with signup
         if (count($errors) === 0) {
-            $res = self::file_post_contents(ROOT_PATH.'/users', $data);
+            unset( $data['passwordConf']);
+            $res = self::file_post_contents(API_ROOT_PATH.'/users', $data);
+            //die(print_r($res));
+            $res = json_decode($res);
+            $res = (array) $res;
             // insert user into database
             if (!$res['error']) {
-                $user_id = self::file_get_data( ROOT_PATH . '/users/id/last');
+                $user_id = self::file_get_data( API_ROOT_PATH . '/users/id/last');
                 $user_id = $user_id['data']['id'];
                 self::loginById($user_id);
             } else {
                 $_SESSION['error_msg'] = "Database error: Could not register user";
             }
         }
+        return $errors;
     }
 }
