@@ -5,7 +5,7 @@ class UserManager extends Manager
 {
 
     // Accept a user ID and returns true if user is admin and false if otherwise
-    private static function isAdmin($user_id)
+    public static function isAdmin($user_id)
     {
         $sql = "SELECT * FROM users WHERE id=? AND role_id IS NOT NULL LIMIT 1";
         $user = self::getSingleRecord($sql, [$user_id]); // get single user from database
