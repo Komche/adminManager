@@ -11,7 +11,7 @@ if (isset($_GET['action'])) {
            // return $errors;
         }
         getPath('signupView.php');
-    } elseif ($_GET['action'] == 'signup') {
+    } elseif ($_GET['action'] == 'login') {
         if (!empty($_POST)) {
             $data = $_POST;
             $errors = signUp($data);
@@ -19,9 +19,9 @@ if (isset($_GET['action'])) {
             // return $errors;
         }
         getPath('loginView.php');
-    } {
-        # code...
-    }
+    } elseif ($_GET['action'] == 'logout') {
+        getPath('logout.php');
+    } 
     
 } else {
     getPath('homeView.php');
