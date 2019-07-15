@@ -29,16 +29,16 @@ ob_start();
                         <span class="help-block"><?php echo $errors['email'] ?></span>
                     <?php endif; ?>
                 </div>
-                <div class="form-group <?php echo isset($errors['password']) ? 'has-error' : '' ?>">
+                <div class="form-group <?php echo isset($errors['password_']) ? 'has-error' : '' ?>">
                     <label class="control-label">Password</label>
-                    <input type="password" name="password" class="form-control">
-                    <?php if (isset($errors['password'])) : ?>
-                        <span class="help-block"><?php echo $errors['password'] ?></span>
+                    <input type="password_" name="password_" class="form-control">
+                    <?php if (isset($errors['password_'])) : ?>
+                        <span class="help-block"><?php echo $errors['password_'] ?></span>
                     <?php endif; ?>
                 </div>
                 <div class="form-group <?php echo isset($errors['passwordConf']) ? 'has-error' : '' ?>">
                     <label class="control-label">Password confirmation</label>
-                    <input type="password" name="passwordConf" class="form-control">
+                    <input type="password_" name="passwordConf" class="form-control">
                     <?php if (isset($errors['passwordConf'])) : ?>
                         <span class="help-block"><?php echo $errors['passwordConf'] ?></span>
                     <?php endif; ?>

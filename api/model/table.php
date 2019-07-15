@@ -109,10 +109,10 @@ class Table
                     $sql .= ":$key)";
                 }
             }
-            //s'il existe un champs password il sera crypter
-            if (array_key_exists('password', $this->values)) {
-                $this->values['password'] = password_hash($this->values['password'], PASSWORD_BCRYPT);
-            }
+            //s'il existe un champs password_ il sera crypter
+            // if (array_key_exists('password_', $this->values)) {
+            //     $this->values['password_'] = password_hash($this->values['password_'], PASSWORD_BCRYPT);
+            // }
 
             //s'il existe un champ email il sera verifer s'il est au bon format
             if (array_key_exists('email', $this->values)) {
@@ -153,10 +153,10 @@ class Table
             }
             $sql .= "WHERE $this->property=:$this->property";
 
-            //s'il existe un champs password il sera crypter
-            if (array_key_exists('password', $this->values)) {
-                $this->values['password'] = password_hash($this->values['password'], PASSWORD_BCRYPT);
-            }
+            //s'il existe un champs password_ il sera crypter
+            // if (array_key_exists('password_', $this->values)) {
+            //     $this->values['password_'] = password_hash($this->values['password_'], PASSWORD_BCRYPT);
+            // }
 
             $this->values[$this->property] = $this->val;
 

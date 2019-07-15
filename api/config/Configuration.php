@@ -10,7 +10,7 @@ class Configuration
         // $this->config['host'] = 'localhost';
         // $this->config['db_name'] = 'akoybiz';
         // $this->config['username'] = 'root';
-        // $this->config['password'] = '';
+        // $this->config['password_'] = '';
         include_once 'var.php';
         //information pour Json Web Token
         $this->config['jwt'] = null;
@@ -29,13 +29,13 @@ class Configuration
         //Information des attribut de la base de donnée
         /* NB: 
             1. si vous souhaitez crypter un de vos champs, par exemple le champ mot de passe il faut 
-            le nomer 'password' 
+            le nomer 'password_' 
             
             2. Si vous souhaitez verifier si une adresse mail est valid il faut nommer le champs 'email' */
         // $this->config['tables']['vols'] = ['ville_depart', 'ville_arriver', 'nb_heure_vols', 'prix'];
         // $this->config['tables']['products'] = ['name', 'description', 'price', 'category_id'];
         // $this->config['tables']['categories'] = ['name', 'description'];
-        // $this->config['tables']['users'] = ['firstname', 'lastname', 'email', 'password'];
+        // $this->config['tables']['users'] = ['firstname', 'lastname', 'email', 'password_'];
 
         /*
         * jointure entre les tables
@@ -44,7 +44,7 @@ class Configuration
         //$this->config['tables']['products']['categories']= ['name', 'description', 'price', 'name as cat_name' ];
 
         //les champs requis d'une table
-        //$this->config['tables']['users']['required'] = ['email', 'password'];
+        //$this->config['tables']['users']['required'] = ['email', 'password_'];
 
         //print_r($this->config['tables']); die();
     }
@@ -60,7 +60,7 @@ class Configuration
 
         try {
             $pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
-            $this->conn = new PDO("mysql:host=$host;dbname=$db_name", $this->config['username'], $this->config['password'], $pdo_options);
+            $this->conn = new PDO("mysql:host=$host;dbname=$db_name", $this->config['username'], $this->config['password_'], $pdo_options);
             $this->conn->exec("set names utf8");
         } catch (Exception $e) {
             echo "Erreur de connection: $e->getMessage()";

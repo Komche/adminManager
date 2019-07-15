@@ -18,13 +18,15 @@ class UserManager extends Manager
 
     private static function loginById($user_id)
     {
+        //die(print_r($user_id));
         $sql = "SELECT u.id, u.role_id, u.username, r.name as role FROM users u LEFT JOIN roles r ON u.role_id=r.id WHERE u.id=? LIMIT 1";
         $user = self::getSingleRecord($sql, [$user_id]);
-
+        //print_r($user);
         if (!empty($user)) {
             // put logged in user into session array
             $_SESSION['user'] = $user;
             $_SESSION['success_msg'] = "You are now logged in";
+            //die(print_r($user_id));
             // if user is admin, redirect to dashboard, otherwise to homepage
             if (self::isAdmin($user_id)) {
                 $permissionsSql = "SELECT p.name as permission_name FROM permissions as p
@@ -44,23 +46,26 @@ class UserManager extends Manager
     private static function validateUser($user)
     {
         $errors = [];
-        // password confirmation
-        if (isset($user['passwordConf']) && ($user['password'] !== $user['passwordConf'])) {
+        // password_ confirmation
+        if (isset($user['passwordConf']) && ($user['password_'] !== $user['passwordConf'])) {
             $errors['passwordConf'] = "The two passwords do not match";
         }
-        // if passwordOld was sent, then verify old password
+        // if passwordOld was sent, then verify old password_
         if (isset($user['passwordOld']) && isset($user['user_id'])) {
             $sql = "SELECT * FROM users WHERE id=? LIMIT 1";
             $oldUser = self::getSingleRecord($sql, [$user['user_id']]);
-            $prevPasswordHash = $oldUser['password'];
+            $prevPasswordHash = $oldUser['password_'];
             if (!password_verify($user['passwordOld'], $prevPasswordHash)) {
-                $errors['passwordOld'] = "The old password does not match";
+                $errors['passwordOld'] = "The old password_ does not match";
             }
         }
-        // the email should be unique for each user for cases where we are saving admin user or signing up new user
-        $oldUser = self::file_get_data(API_ROOT_PATH . '/users/email/' . $user['email']);
-        if (!$oldUser['error']) {
-            $errors['email'] = "Email already exists";
+        
+        if (!empty($user['passwordConf'])) {
+            // the email should be unique for each user for cases where we are saving admin user or signing up new user
+            $oldUser = self::file_get_data(API_ROOT_PATH . '/users/email/' . $user['email']);
+            if (!$oldUser['error']) {
+                $errors['email'] = "Email already exists";
+            }
         }
 
         // required validation
@@ -98,20 +103,22 @@ class UserManager extends Manager
         $errors = self::validateUser($data);
 
         // receive all input values from the form. No need to escape... bind_param takes care of escaping
-        $data['password'] = password_hash( $data['password'], PASSWORD_DEFAULT); //encrypt the password before saving in the database
+        
+        $data['password_'] = password_hash($data['password_'], PASSWORD_DEFAULT); //encrypt the password_ before saving in the database
         $data['profile_picture'] = self::uploadProfilePicture($file);
         $data['created_at'] = date('Y-m-d H:i:s');
-
+        print_r($data);
         // if no errors, proceed with signup
         if (count($errors) === 0) {
-            unset( $data['passwordConf']);
-            $res = self::file_post_contents(API_ROOT_PATH.'/users', $data);
+            unset($data['passwordConf']);
+            $res = self::file_post_contents(API_ROOT_PATH . '/users', $data);
+            //die(print_r($data));
             //die(print_r($res));
             $res = json_decode($res);
             $res = (array) $res;
             // insert user into database
             if (!$res['error']) {
-                $user_id = self::file_get_data( API_ROOT_PATH . '/users/id/last');
+                $user_id = self::file_get_data(API_ROOT_PATH . '/users/id/last');
                 $user_id = $user_id['data']['id'];
                 self::loginById($user_id);
             } else {
@@ -119,5 +126,37 @@ class UserManager extends Manager
             }
         }
         return $errors;
+    }
+
+    public static function connectUser($data)
+    {
+        //die(print_r($data));
+        // validate form values
+        $errors = self::validateUser($data);
+
+        if (empty($errors)) {
+            $url = API_ROOT_PATH . '/users/email/' . $data['email'];
+            $user = self::file_get_data($url);
+            // echo($url);
+            //  die(print_r($user));
+            // $user = json_decode($user);
+            // $user = (array) $user;
+
+            if (!$user['error']) { // if user was found
+                $user = $user['data'][0];
+                $hash = '$2y$07$BCryptRequires22Chrcte/VlQH0piJtjXl.0t1XkA8pw9dMXTpOq';
+                //print_r($data['password_']);
+                echo(trim($data['password_']));
+                if (password_verify($data['password_'], $user['password_'])) { // if password_ matches
+                    // log user in
+                    //die(print_r($data));
+                    self::loginById($user['id']);
+                } else { // if password_ does not match
+                    $_SESSION['error_msg'] = "Wrong credentials password_";
+                }
+            } else { // if no user found
+                $_SESSION['error_msg'] = "Wrong credentials";
+            }
+        }
     }
 }

@@ -24,8 +24,8 @@
             <input type="text" name="username">
         </div>
         <div class="form-control">
-            <label for="password">mot de passe</label>
-            <input type="password" name="password">
+            <label for="password_">mot de passe</label>
+            <input type="password_" name="password_">
         </div>
         <input type="submit" value="Valider">
     </form>
@@ -50,7 +50,7 @@ if (isset($_POST)) {
         $this->config["host"] = \'' . $host . '\';
         $this->config["db_name"] = \'' . $db_name . '\';
         $this->config["username"] = \'' . $username . '\';
-        $this->config["password"] = \'' . $password . '\';';
+        $this->config["password_"] = \'' . $password_ . '\';';
 
 
     fwrite($file, $txt);

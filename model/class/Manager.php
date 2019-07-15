@@ -34,8 +34,8 @@ class Manager{
             )
         );
         //print_r($opts); die($url);
-        // if ($username && $password) {
-        //     $opts['http']['header'] = ("Authorization: Basic " . base64_encode("$username:$password"));
+        // if ($username && $password_) {
+        //     $opts['http']['header'] = ("Authorization: Basic " . base64_encode("$username:$password_"));
         // }
 
         $context = stream_context_create($opts);
@@ -57,8 +57,8 @@ class Manager{
             )
         );
         //print_r($opts); die($url);
-        // if ($username && $password) {
-        //     $opts['http']['header'] = ("Authorization: Basic " . base64_encode("$username:$password"));
+        // if ($username && $password_) {
+        //     $opts['http']['header'] = ("Authorization: Basic " . base64_encode("$username:$password_"));
         // }
 
         $context = stream_context_create($opts);

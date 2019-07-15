@@ -8,6 +8,12 @@ function signIn($data, $file)
    return UserManager::addUser($data, $file);
 }
 
+function signUp($data)
+{
+   //print_r($data);
+   return UserManager::connectUser($data);
+}
+
 /**
  * @param string $page
  * @return void
