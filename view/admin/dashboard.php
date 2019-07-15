@@ -7,6 +7,7 @@ if (!empty($_POST)) {
 }
 global $errors;
 ob_start();
+include('admin_navbar.php');
 ?>
 
 <div class="col-md-4 col-md-offset-4">
