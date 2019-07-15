@@ -7,6 +7,7 @@ if (!empty($_POST)) {
 }
 global $errors;
 ob_start();
+include('navbar.php');
 ?>
 
 <div class="container">
