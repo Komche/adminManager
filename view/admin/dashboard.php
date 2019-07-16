@@ -23,5 +23,5 @@ include('admin_navbar.php');
 
 <?php
 $content = ob_get_clean();
-require('template.php');
+require('../template.php');
 ?>
