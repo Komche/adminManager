@@ -12,7 +12,7 @@ if (!empty($_POST)) {
     }
 }
 global $errors;
- $roles = getAllRoles();
+ $roles = RoleManager::getAllRoles();
 ob_start();
 include_once(dirname(__DIR__)."/admin_navbar.php");
 ?>
