@@ -24,16 +24,3 @@ function getPath($page, $folder=null)
 }
 
 
-function getAllRoles()
-{
-   $url = API_ROOT_PATH.'/roles';
-   $data = Manager::file_get_data($url);
-   if (!$data['error']) {
-      $data = $data['data'];
-      return $data;
-   } else {
-      $errors['message'] = $data['message'];
-      return $errors;
-   }
-   
-}
