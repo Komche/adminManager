@@ -1,7 +1,10 @@
 <?php
 global $title;
 $title = "Admin Area - Users";
-
+if (isset($_GET['delete_user'])) {
+    $user_id = $_GET['delete_user'];
+    UserManager::deleteUser($user_id);
+}
 $adminUsers = UserManager::getAdminUsers();
 ob_start();
 include_once(dirname(__DIR__) . "/admin_navbar.php");
@@ -37,7 +40,7 @@ include_once(dirname(__DIR__) . "/admin_navbar.php");
                             </a>
                         </td>
                         <td class="text-center">
-                            <a href="index.php?action=userForm&delete_user=<?php echo $value['id'] ?>" class="btn btn-sm btn-danger">
+                            <a href="index.php?action=userList&delete_user=<?php echo $value['id'] ?>" class="btn btn-sm btn-danger">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </a>
                         </td>

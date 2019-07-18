@@ -51,8 +51,9 @@ if (isset($_GET['action'])) {
                 }
              }
         }
+        
         getPath('userFormView.php', 'admin/users/');
-    } elseif ($_GET['action'] == 'UserList') {
+    } elseif ($_GET['action'] == 'userList') {
         getPath('userListView.php', 'admin/users/');
     }
     

@@ -1,22 +1,15 @@
 <?php
-global $title;
+global $title, $isEditing;
 $title = "Admin";
 if (!empty($_POST)) {
     extract($_POST);
-} else {
-    // variable declaration. These variables will be used in the user form
-   // global $user, $role_id, $username, $email, $password, $passwordConf, $profile_picture, $isEditing,
-   // $user, $errors;
-    $user_id = 0;
-    $role_id = NULL;
-    $username = "";
-    $email = "";
-    $password = "";
-    $passwordConf = "";
-    $profile_picture = "";
-    $isEditing = false;
-    $users = array();
-    $errors = array();
+} elseif (isset($_GET["edit_user"])) {
+    $user_id = $_GET["edit_user"];
+    $user = UserManager::editUser($user_id);
+    if (!empty($user)) {
+        //print_r($user);
+        extract($user);
+    }
 }
 global $errors;
  $roles = getAllRoles();

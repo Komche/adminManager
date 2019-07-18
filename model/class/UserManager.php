@@ -203,7 +203,7 @@ class UserManager extends Manager
             
             if (!$result['error']) {
                 $_SESSION['success_msg'] = "User account created successfully";
-                header("location: index.php?action=UserList");
+                header("location: index.php?action=userList");
                 exit(0);
             } else {
                 $_SESSION['error_msg'] = "Something went wrong. Could not save user in Database";
@@ -228,17 +228,15 @@ class UserManager extends Manager
 
     public function editUser($user_id)
     {
-        global $user_id, $role_id, $username, $email, $isEditing, $profile_picture;
+        global $isEditing;
 
-        $url = API_ROOT_PATH.'/users/id/'+$user_id;
+        $url = API_ROOT_PATH.'/users/id/'.$user_id;
         $user = self::file_get_data($url);
-        
-        $isEditing = true;
-        $user_id = $user['id'];
-        $role_id = $user['role_id'];
-        $username = $user['username'];
-        $profile_picture = $user['profile_picture'];
-        $email = $user['email'];
+        if (!$user['error']) {
+            $isEditing = true;
+            $user = $user['data'][0];
+            return $user;
+        }        
     }
 
     public function deleteUser($user_id)
