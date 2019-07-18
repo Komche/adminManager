@@ -1,14 +1,27 @@
-<?php $title = "Admin";
+<?php
+global $title;
+$title = "Admin";
 if (!empty($_POST)) {
     extract($_POST);
 } else {
-    $username = '';
-    $email = '';
+    // variable declaration. These variables will be used in the user form
+   // global $user, $role_id, $username, $email, $password, $passwordConf, $profile_picture, $isEditing,
+   // $user, $errors;
+    $user_id = 0;
+    $role_id = NULL;
+    $username = "";
+    $email = "";
+    $password = "";
+    $passwordConf = "";
+    $profile_picture = "";
+    $isEditing = false;
+    $users = array();
+    $errors = array();
 }
 global $errors;
  $roles = getAllRoles();
 ob_start();
-include('admin_navbar.php');
+include_once(dirname(__DIR__)."/admin_navbar.php");
 ?>
 
 <div class="container" style="margin-bottom: 150px;">
@@ -54,17 +67,17 @@ include('admin_navbar.php');
                         <?php endif; ?>
                     </div>
                 <?php endif; ?>
-                <div class="form-group <?php echo isset($errors['password']) ? 'has-error' : '' ?>">
+                <div class="form-group <?php echo isset($errors['password_']) ? 'has-error' : '' ?>">
                     <label class="control-label">Your Password</label>
-                    <input type="password" name="password" class="form-control">
+                    <input type="password" name="password_" class="form-control">
                     <?php if (isset($errors['password'])) : ?>
-                        <span class="help-block"><?php echo $errors['password'] ?></span>
+                        <span class="help-block"><?php echo $errors['password_'] ?></span>
                     <?php endif; ?>
                 </div>
                 <div class="form-group <?php echo isset($errors['role_id']) ? 'has-error' : '' ?>">
                     <label class="control-label">User Role</label>
                     <select class="form-control" name="role_id">
-                        <option value=""></option>
+                        <option value="">Choisir un rôle</option>
                         <?php foreach ($roles as $role) : ?>
                             <?php if ($role['id'] === $role_id) : ?>
                                 <option value="<?php echo $role['id'] ?>" selected><?php echo $role['name'] ?></option>
@@ -87,9 +100,9 @@ include('admin_navbar.php');
                 </div>
                 <div class="form-group">
                     <?php if ($isEditing === true) : ?>
-                        <button type="submit" name="update_user" class="btn btn-success btn-block btn-lg">Update user</button>
+                        <button type="submit" class="btn btn-success btn-block btn-lg">Update user</button>
                     <?php else : ?>
-                        <button type="submit" name="save_user" class="btn btn-success btn-block btn-lg">Save user</button>
+                        <button type="submit" class="btn btn-success btn-block btn-lg">Save user</button>
                     <?php endif; ?>
                 </div>
             </form>
@@ -99,6 +112,7 @@ include('admin_navbar.php');
 
 
 <?php
+global $content;
 $content = ob_get_clean();
-require('../template.php');
+getPath('template.php');
 ?>

@@ -18,7 +18,22 @@ function signUp($data)
  * @param string $page
  * @return void
  */
-function getPath($page)
+function getPath($page, $folder=null)
 {
-   require_once('view/' . $page);
+   require_once("view/$folder" . $page);
+}
+
+
+function getAllRoles()
+{
+   $url = API_ROOT_PATH.'/roles';
+   $data = Manager::file_get_data($url);
+   if (!$data['error']) {
+      $data = $data['data'];
+      return $data;
+   } else {
+      $errors['message'] = $data['message'];
+      return $errors;
+   }
+   
 }

@@ -1,4 +1,6 @@
-<?php $title = "UserAccounts - Home";
+<?php
+global $title;
+$title = "UserAccounts - Home";
 ob_start();
 include('navbar.php');
 ?>
@@ -7,6 +9,7 @@ include('navbar.php');
 <h1>Home page</h1>
 
 <?php
+global $content;
 $content = ob_get_clean();
 require('template.php');
 ?>

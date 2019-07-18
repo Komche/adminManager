@@ -81,7 +81,7 @@ class Manager{
         curl_close($ch);
     }
 
-    public static function getMultipleRecords($sql, $types = null, $params = [])
+    public static function getMultipleRecords($sql, $params = [])
     {
         $req = self::bdd()->prepare($sql);
         if (!empty($params) && !empty($params)) { // parameters must exist before you call bind_param() method

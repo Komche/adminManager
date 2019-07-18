@@ -1,4 +1,6 @@
-<?php $title = "Admin";
+<?php 
+global $title;
+$title = "Admin";
 if (!empty($_POST)) {
     extract($_POST);
 } else {
@@ -22,6 +24,7 @@ include('admin_navbar.php');
 
 
 <?php
+global $content;
 $content = ob_get_clean();
-require('../template.php');
+require(dirname(__DIR__) . '/template.php');
 ?>

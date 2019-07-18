@@ -1,4 +1,6 @@
-<?php $title = "Inscription";
+<?php
+global $title;
+$title = "Inscription";
 if (!empty($_POST)) {
    extract($_POST);
 } else {
@@ -59,6 +61,7 @@ include('navbar.php');
 </div>
 
 <?php
+global $content;
 $content = ob_get_clean();
 require('template.php');
 ?>

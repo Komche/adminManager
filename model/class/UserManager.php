@@ -34,7 +34,7 @@ class UserManager extends Manager
                             WHERE pr.role_id=?";
                 $userPermissions = self::getMultipleRecords($permissionsSql, [$user['role_id']]);
                 $_SESSION['userPermissions'] = $userPermissions;
-                header('location: ' . BASE_URL . 'admin/dashboard.php');
+                header('location: admin/dashboard.php');
             } else {
                 header('location: index.php');
             }
@@ -157,6 +157,98 @@ class UserManager extends Manager
             } else { // if no user found
                 $_SESSION['error_msg'] = "Wrong credentials";
             }
+        }
+    }
+
+    public function updateUser($user_id, $data, $file)
+    {
+        global $errors, $role_id, $isEditing;
+        $errors = self::validateUser($data);
+
+        // receive all input values from the form
+        $data['password_'] = password_hash($data['password_'], PASSWORD_DEFAULT); //encrypt the password_ before saving in the database
+        $data['profile_picture'] = self::uploadProfilePicture($file);
+        if (count($errors) === 0) {
+            $url = API_ROOT_PATH."/users/$user_id";
+            $result = self::file_put_contents($url, $data);
+            
+            if (!$result['error']) {
+                $_SESSION['success_msg'] = "User account successfully updated";
+                header("location: admin/users/userList.php");
+                exit(0);
+            }
+        } else {
+            // continue editting if there were errors
+            $isEditing = true;
+        }
+    }
+    // Save user to database
+    public function saveUser($data, $file)
+    {
+        
+        global  $errors, $isEditing;
+        $errors = self::validateUser($data);
+       
+        // receive all input values from the form
+        $data['password_'] = password_hash($data['password_'], PASSWORD_DEFAULT); //encrypt the password_ before saving in the database
+        $data['profile_picture'] = self::uploadProfilePicture($file); // upload profile picture and return the picture name
+        
+        if (count($errors) === 0) {
+            unset($data['passwordConf']);
+            $result = self::file_post_contents(API_ROOT_PATH . '/users', $data);
+            // print_r($data);
+            // die(print_r($result));
+            $result = json_decode($result);
+            $result = (array) $result;
+            
+            if (!$result['error']) {
+                $_SESSION['success_msg'] = "User account created successfully";
+                header("location: index.php?action=UserList");
+                exit(0);
+            } else {
+                $_SESSION['error_msg'] = "Something went wrong. Could not save user in Database";
+            }
+        }
+    }
+
+    public function getAdminUsers()
+    {
+        global $conn;
+        // for every user, select a user role name from roles table, and then id, role_id and username from user table
+        // where the role_id on user table matches the id on roles table
+        $sql = "SELECT r.name as role, u.id, u.role_id, u.username
+          FROM users u
+          LEFT JOIN roles r ON u.role_id=r.id
+          WHERE role_id IS NOT NULL AND u.id != ?";
+
+        $users = self::getMultipleRecords($sql, [$_SESSION['user']['id']]);
+        return $users;
+    }
+
+    public function editUser($user_id)
+    {
+        global $user_id, $role_id, $username, $email, $isEditing, $profile_picture;
+
+        $url = API_ROOT_PATH.'/users/id/'+$user_id;
+        $user = self::file_get_data($url);
+        
+        $isEditing = true;
+        $user_id = $user['id'];
+        $role_id = $user['role_id'];
+        $username = $user['username'];
+        $profile_picture = $user['profile_picture'];
+        $email = $user['email'];
+    }
+
+    public function deleteUser($user_id)
+    {
+        $sql = "DELETE FROM users WHERE id=?";
+        $result = self::modifyRecord($sql, [$user_id]);
+
+        if ($result) {
+            $_SESSION['success_msg'] = "User trashed!!";
+            header("location: admin/users/userList.php");
+            exit(0);
         }
     }
 }
