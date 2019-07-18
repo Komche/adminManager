@@ -53,7 +53,7 @@ if (isset($_GET['action'])) {
         }
         getPath('userFormView.php', 'admin/users/');
     } elseif ($_GET['action'] == 'UserList') {
-        getPath('dashboard.php', 'admin/');
+        getPath('userListView.php', 'admin/users/');
     }
     
 } else {

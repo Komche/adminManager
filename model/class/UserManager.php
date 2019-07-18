@@ -222,6 +222,7 @@ class UserManager extends Manager
           WHERE role_id IS NOT NULL AND u.id != ?";
 
         $users = self::getMultipleRecords($sql, [$_SESSION['user']['id']]);
+       // print_r($users);
         return $users;
     }
 
